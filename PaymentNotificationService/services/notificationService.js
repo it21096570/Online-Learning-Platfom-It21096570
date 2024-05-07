@@ -17,14 +17,14 @@ const emailTransporter = nodemailer.createTransport({
 });
 
 // Twilio configuration
-const twilioClient = twilio("", ""); // Replace with your Twilio credentials
+const twilioClient = twilio("AC4ba26accf47bf1b07639820c6fc28bce", "ce5a05579cbc326f020df4c272f57de7"); // Replace with your Twilio credentials
 
 // Function to process RabbitMQ messages
 async function processMessage(msg) {
     const content = JSON.parse(msg.content.toString());
+    const email = content.email;
 
     // Determine the notification type based on payment status
-    let notificationType = "email"; // Default to email
     let message = "";
 
     if (content.status === "completed") {
@@ -38,35 +38,36 @@ async function processMessage(msg) {
         paymentId: content.paymentId,
         userId: content.userId,
         status: content.status,
-        notificationType,
         message,
     });
 
     await notification.save();
 
     // Send email notification
-    if (notificationType === "email") {
-        try {
-            let info = await emailTransporter.sendMail({
-                from: "divlinkapp@gmail.com", // Update with your email
-                to: "thanujadha20@gmail.com", // Update with the user's email
-                subject: "Payment Notification",
-                text: message,
-            });
-            console.log('Email sent');
-        } catch (error) {
-            console.error('Error sending email:', error);
-        }
+
+    try {
+        let info = await emailTransporter.sendMail({
+            from: "divlinkapp@gmail.com", // Update with your email
+            to: email, // Update with the user's email
+            subject: "Payment Notification",
+            text: message,
+        });
+        console.log('Email sent');
+    } catch (error) {
+        console.error('Error sending email:', error);
     }
 
-    // Send SMS notification
-    if (notificationType === "sms") {
-        await twilioClient.messages.create({
+    try {
+        let info = await twilioClient.messages.create({
             body: message,
             from: "+14015371280", // Update with your Twilio phone number
-            to: "+750561541", // Update with the user's phone number
+            to: "+94750561541", // Update with the user's phone number
         });
+        console.log('sms sent');
+    } catch (error) {
+        console.error('Error sending email:', error);
     }
+
 }
 
 // Function to connect to RabbitMQ and start consuming messages

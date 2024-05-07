@@ -1,0 +1,12 @@
+# payment-notification-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-notification-service
+spec:
+  selector:
+    app: payment-notification-service
+  ports:
+  - protocol: TCP
+    port: 3001  # Internal service port
+  type: ClusterIP  # Internal communication only

@@ -5,10 +5,6 @@ const NotificationSchema = new Schema({
     paymentId: String,
     userId: String,
     status: String,
-    notificationType: {
-        type: String,
-        enum: ["email", "sms"],
-    },
     message: String,
     createdAt: {
         type: Date,
