@@ -1,0 +1,12 @@
+# payment-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+spec:
+  selector:
+    app: payment-service  # Connects to the matching deployment pods
+  ports:
+  - protocol: TCP
+    port: 8081  # Expose this port
+  type: LoadBalancer  # Expose externally with an IP address or URL

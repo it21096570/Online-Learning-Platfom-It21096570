@@ -3,13 +3,16 @@ const { initiatePaymentService } = require("../services/paymentService");
 
 const initiatePayment = async (req, res) => {
   try {
-    const { userId, courseId, amount } = req.body;
+    const { userId, courseId, amount, userEmail } = req.body;
 
     // Create a new payment record with "pending" status
     const payment = new Payment({ userId, courseId, amount });
+    const email = userEmail;
 
+    console.log(email)
+    
     // Simulate a payment initiation with a placeholder
-    const paymentResult = await initiatePaymentService(payment);
+    const paymentResult = await initiatePaymentService(payment, email);
 
     res.status(201).json({ message: "Payment initiated", payment: paymentResult });
   } catch (err) {
