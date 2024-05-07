@@ -1,13 +1,21 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require('cors');
+
 
 const paymentRoutes = require("./routes/payment");
 
+const corsOptions = {
+    origin: 'http://localhost:3000', // Change this to your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+};
 
 const app = express();
+app.use(cors(corsOptions));
 const port = 8081;
-const mongoURI = "mongodb+srv://thanuja:fU9UNzunKlAfADxE@cluster0.0ckqiu2.mongodb.net/DS_Microservice_Project_DB";
+const mongoURI = "mongodb+srv://thanuja:fU9UNzunKlAfADxE@cluster0.0ckqiu2.mongodb.net/DS_Microservice_Payment";
 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,

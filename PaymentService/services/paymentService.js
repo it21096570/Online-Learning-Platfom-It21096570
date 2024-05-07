@@ -10,7 +10,7 @@ async function connectRabbitMQ() {
 }
 
 // Simulate payment initiation (this would be where you'd integrate with a sandbox payment gateway)
-async function initiatePaymentService(payment) {
+async function initiatePaymentService(payment, email) {
     // Simulate a delay and update payment status to "completed"
     payment.status = "completed";
     await payment.save();
@@ -23,6 +23,7 @@ async function initiatePaymentService(payment) {
         courseId: payment.courseId,
         userId: payment.userId,
         amount: payment.amount,
+        email: email
     })));
 
     return payment;
